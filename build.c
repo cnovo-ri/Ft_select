@@ -1,9 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   build.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/01/15 23:42:31 by cnovo-ri          #+#    #+#             */
+/*   Updated: 2018/01/16 04:29:38 by cnovo-ri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include "ft_select.h"
+
+int					ft_outc(int c)
+{
+	ft_putchar(c);
+	return (0);
+}
 
 int					default_shell(void)
 {
 	struct termios	term;
-	char			*name_term;
 
 	if (tcgetattr(0, &term) == -1)
 		return (-1);
@@ -13,30 +30,56 @@ int					default_shell(void)
 	return (0);
 }
 
-int					show_arrrow(void)
+t_act				stock_actions(void)
+{
+	t_act	act;
+
+	act.cmstr = tgetstr("cm", NULL);
+	act.clstr = tgetstr("cl", NULL);
+	act.kustr = tgetstr("ku", NULL);
+	act.kdstr = tgetstr("kd", NULL);
+	act.klstr = tgetstr("kl", NULL);
+	act.krstr = tgetstr("kr", NULL);
+	return (act);
+}
+int					show_arrrow(t_act act)
 {
 	char	buf[3];
 
+	tputs(act.clstr, 0, ft_outc);
 	while (1)
 	{
-		ft_putnbr(getchar());
+/*		ft_putnbr(getchar());
 		ft_putchar('\n');
-		read(0, buf, 3);
+*/		read(0, buf, 3);
 		if (buf[0] == 27)
-			printf("Arrow\n");
+		{
+			printf("That's an arrow.\n");
+			if (buf[2] == 65)
+				printf("Arrow UP\n");
+			if (buf[2] == 66)
+				printf("Arrow DOWN\n");
+			if (buf[2] == 67)
+				printf("Arrow RIGHT\n");
+			if (buf[2] == 68)
+			{
+				printf("Arrow LEFT\n");
+				tputs(tgoto(act.cmstr, 0, 0), 1, ft_outc);
+			}
+		}
 		else if (buf[0] == 4)
 		{
-			printf("ctrl + d \n");
+			printf("ctrl + d, exit.\n");
 			return (0);
 		}
 	}
 	return (0);
 }
 
-int					main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
-	struct termios	term;
 	char			*name_term;
+	struct termios	term;
 
 	(void)argc;
 	(void)argv;
@@ -52,8 +95,7 @@ int					main(int argc, char **argv)
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
 		return (-1);
-	show_arrrow();
-	if (default_shell() == -1)
-		return (-1);
-	return (0);
+	show_arrrow(stock_actions());
+	default_shell();
+	return(0);
 }
