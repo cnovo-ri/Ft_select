@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/21 10:20:36 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2017/10/20 02:31:27 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/01/17 05:08:21 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@
 # include <curses.h>
 # include <signal.h>
 # include <termcap.h>
+# include <sys/ioctl.h>
 
+# define RVIDEO		"\033[7m"
+# define UNDERLINE	"\033[4m"
 # define BLACK		"\033[1;30m"
 # define RED		"\033[1;31m"
 # define GREEN		"\033[1;32m"

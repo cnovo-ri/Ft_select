@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 23:42:31 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/01/16 04:29:38 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/01/17 05:10:11 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,38 +40,83 @@ t_act				stock_actions(void)
 	act.kdstr = tgetstr("kd", NULL);
 	act.klstr = tgetstr("kl", NULL);
 	act.krstr = tgetstr("kr", NULL);
+	act.home = tgetstr("ho", NULL);
 	return (act);
 }
-int					show_arrrow(t_act act)
+
+int					window_size(void)
 {
-	char	buf[3];
+	struct winsize	w;
+	t_size			size;
+
+	ioctl(STDOUT_FILENO,TIOCGWINSZ, &w);
+	size.lin = w.ws_row;
+	size.col = w.ws_col;
+/*	printf("lines %d\n", size.lin);
+	printf("columns %d\n", size.col);
+*/	return(0);
+}
+
+int					lenmax_str(char **argv)
+{
+	int			len;
+	int			i;
+
+	len = 0;
+	i = 1;
+	while (argv[i])
+	{
+		if (ft_strlen(argv[i]) > len)
+			len = ft_strlen(argv[i]);
+		i++;
+	}
+	return (len);
+}
+
+int					show_arrrow(t_act act, int argc, char **argv)
+{
+	char			buf[3];
+	int				i;
+	int				len;
 
 	tputs(act.clstr, 0, ft_outc);
+	i = 1;
+	while (i < argc)
+	{
+		ft_putstr(argv[i]);
+//		ft_putnbr(ft_strlen(argv[i]));
+		ft_putchar(' ');
+		i++;
+	}
+	ft_putchar('\n');
+	len = lenmax_str(argv);
+	printf(RVIDEO"lenmax : %d\n"NORMAL, len);
 	while (1)
 	{
-/*		ft_putnbr(getchar());
-		ft_putchar('\n');
-*/		read(0, buf, 3);
-		if (buf[0] == 27)
+		read(0, buf, 3);
+		if (buf[0] == 27 && buf[1] != '\0')
 		{
-			printf("That's an arrow.\n");
 			if (buf[2] == 65)
 				printf("Arrow UP\n");
 			if (buf[2] == 66)
 				printf("Arrow DOWN\n");
 			if (buf[2] == 67)
+			{
 				printf("Arrow RIGHT\n");
+//				tputs(act.home, 0, ft_outc);
+			}
 			if (buf[2] == 68)
 			{
 				printf("Arrow LEFT\n");
-				tputs(tgoto(act.cmstr, 0, 0), 1, ft_outc);
+//				tputs(tgoto(act.cmstr, 0, 0), 1, ft_outc);
 			}
 		}
-		else if (buf[0] == 4)
+		else if (buf[0] == 27 && buf[1] == '\0')
 		{
-			printf("ctrl + d, exit.\n");
+			printf("escape, exit.\n");
 			return (0);
 		}
+		ft_bzero(buf, 3);
 	}
 	return (0);
 }
@@ -80,9 +125,7 @@ int				main(int argc, char **argv)
 {
 	char			*name_term;
 	struct termios	term;
-
-	(void)argc;
-	(void)argv;
+	
 	if (!(name_term = getenv("TERM")))
 		return (-1);
 	if (!(tgetent(NULL, name_term)))
@@ -95,7 +138,8 @@ int				main(int argc, char **argv)
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
 		return (-1);
-	show_arrrow(stock_actions());
+	window_size();
+	show_arrrow(stock_actions(), argc, argv);
 	default_shell();
 	return(0);
 }
