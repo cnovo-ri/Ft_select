@@ -14,6 +14,7 @@
 
 static void			first_print(char **argv)
 {
+	char		**tmp;
 	t_size		size;
 	int			len;
 	int			i;
@@ -22,13 +23,13 @@ static void			first_print(char **argv)
 	i = 1;
 	size = window_size();
 	len = wordbyline(&size, argv);
-	while (argv[i])
+	tmp = morespaces(argv);
+	while (tmp[i])
 	{
 		j = 0;
-		while (j <= len && argv[i])
+		while (j <= len && tmp[i])
 		{
-			ft_putstr(argv[i]);
-			ft_putchar(' ');
+			ft_putstr(tmp[i]);
 			i++;
 			j++;
 		}
@@ -38,6 +39,7 @@ static void			first_print(char **argv)
 
 int					show_arrow(t_act act, int argc, char **argv)
 {
+	char			**tmp;
 	char			buf[3];
 	int				i;
 	int				j;
@@ -50,6 +52,7 @@ int					show_arrow(t_act act, int argc, char **argv)
 	tputs(act.clstr, 0, ft_outc);
 	tputs(act.invis, 0, ft_outc);
 	first_print(argv);
+	tmp = morespaces(argv);
 	while (1)
 	{
 		if (flag != 0)
@@ -62,13 +65,12 @@ int					show_arrow(t_act act, int argc, char **argv)
 		{
 			i = 1;
 			tputs(act.clstr, 0, ft_outc);
-			while (argv[i])
+			while (tmp[i])
 			{
 				j = 0;
-				while (j <= len && argv[i])
+				while (j <= len && tmp[i])
 				{
-					ft_putstr(argv[i]);
-					ft_putchar(' ');
+					ft_putstr(tmp[i]);
 					i++;
 					j++;
 				}

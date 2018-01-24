@@ -32,6 +32,7 @@ typedef struct		s_size
 	unsigned short	col_tmp;
 }					t_size;
 
+char				**morespaces(char **argv);
 int					ft_outc(int c);
 int					default_shell(void);
 t_act				stock_actions(void);
