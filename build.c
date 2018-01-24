@@ -12,87 +12,72 @@
 
 # include "ft_select.h"
 
-int					ft_outc(int c)
+static void			first_print(char **argv)
 {
-	ft_putchar(c);
-	return (0);
-}
-
-int					default_shell(void)
-{
-	struct termios	term;
-
-	if (tcgetattr(0, &term) == -1)
-		return (-1);
-	term.c_lflag = (ICANON | ECHO);
-	if (tcsetattr(0, 0, &term) == -1)
-		return (-1);
-	return (0);
-}
-
-t_act				stock_actions(void)
-{
-	t_act	act;
-
-	act.cmstr = tgetstr("cm", NULL);
-	act.clstr = tgetstr("cl", NULL);
-	act.kustr = tgetstr("ku", NULL);
-	act.kdstr = tgetstr("kd", NULL);
-	act.klstr = tgetstr("kl", NULL);
-	act.krstr = tgetstr("kr", NULL);
-	act.home = tgetstr("ho", NULL);
-	return (act);
-}
-
-int					window_size(void)
-{
-	struct winsize	w;
-	t_size			size;
-
-	ioctl(STDOUT_FILENO,TIOCGWINSZ, &w);
-	size.lin = w.ws_row;
-	size.col = w.ws_col;
-/*	printf("lines %d\n", size.lin);
-	printf("columns %d\n", size.col);
-*/	return(0);
-}
-
-int					lenmax_str(char **argv)
-{
+	t_size		size;
 	int			len;
 	int			i;
-
-	len = 0;
+	int			j;
+	
 	i = 1;
+	size = window_size();
+	len = wordbyline(&size, argv);
 	while (argv[i])
 	{
-		if (ft_strlen(argv[i]) > len)
-			len = ft_strlen(argv[i]);
-		i++;
+		j = 0;
+		while (j <= len && argv[i])
+		{
+			ft_putstr(argv[i]);
+			ft_putchar(' ');
+			i++;
+			j++;
+		}
+		ft_putchar('\n');
 	}
-	return (len);
 }
 
-int					show_arrrow(t_act act, int argc, char **argv)
+int					show_arrow(t_act act, int argc, char **argv)
 {
 	char			buf[3];
 	int				i;
+	int				j;
 	int				len;
+	int				flag;
+	t_size			size;
 
-	tputs(act.clstr, 0, ft_outc);
 	i = 1;
-	while (i < argc)
-	{
-		ft_putstr(argv[i]);
-//		ft_putnbr(ft_strlen(argv[i]));
-		ft_putchar(' ');
-		i++;
-	}
-	ft_putchar('\n');
-	len = lenmax_str(argv);
-	printf(RVIDEO"lenmax : %d\n"NORMAL, len);
+	flag = 0;
+	tputs(act.clstr, 0, ft_outc);
+	tputs(act.invis, 0, ft_outc);
+	first_print(argv);
 	while (1)
 	{
+		if (flag != 0)
+		{
+			size = window_size();
+			len = wordbyline(&size, argv);
+		}
+		if (flag == 1 && ((size.lin_tmp != size.lin) ||
+			(size.col_tmp != size.col)))
+		{
+			i = 1;
+			tputs(act.clstr, 0, ft_outc);
+			while (argv[i])
+			{
+				j = 0;
+				while (j <= len && argv[i])
+				{
+					ft_putstr(argv[i]);
+					ft_putchar(' ');
+					i++;
+					j++;
+				}
+				ft_putchar('\n');
+			}
+		}
+		flag = 1;
+		size.lin_tmp = size.lin;
+		size.col_tmp = size.col;
 		read(0, buf, 3);
 		if (buf[0] == 27 && buf[1] != '\0')
 		{
@@ -114,9 +99,31 @@ int					show_arrrow(t_act act, int argc, char **argv)
 		else if (buf[0] == 27 && buf[1] == '\0')
 		{
 			printf("escape, exit.\n");
+			tputs(act.normal, 0, ft_outc);
 			return (0);
 		}
-		ft_bzero(buf, 3);
+	/*	if (flag == 1 && ((size.lin_tmp != size.lin) ||
+			(size.col_tmp != size.col)))
+		{
+			i = 1;
+			tputs(act.clstr, 0, ft_outc);
+			while (argv[i])
+			{
+				j = 0;
+				while (j <= len && argv[i])
+				{
+					ft_putstr(argv[i]);
+					ft_putchar(' ');
+					i++;
+					j++;
+				}
+				ft_putchar('\n');
+			}
+		}
+		flag = 1;
+		size.lin_tmp = size.lin;
+		size.col_tmp = size.col;
+	*/	ft_bzero(buf, 3);
 	}
 	return (0);
 }
@@ -125,10 +132,18 @@ int				main(int argc, char **argv)
 {
 	char			*name_term;
 	struct termios	term;
-	
-	if (!(name_term = getenv("TERM")))
+
+	if (argc < 2)
+	{
+		ft_putstr_fd("We need more arguments bro\n", 2);
 		return (-1);
-	if (!(tgetent(NULL, name_term)))
+	}
+	if ((name_term = getenv("TERM")) == NULL)
+	{
+		ft_putstr_fd("Hey, bring back env bro\n", 2);
+		return (-1);
+	}
+	if (tgetent(NULL, name_term) == -1)
 		return (-1);
 	if (tcgetattr(0, &term) == -1)
 		return (-1);
@@ -138,8 +153,7 @@ int				main(int argc, char **argv)
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
 		return (-1);
-	window_size();
-	show_arrrow(stock_actions(), argc, argv);
+	show_arrow(stock_actions(), argc, argv);
 	default_shell();
 	return(0);
 }

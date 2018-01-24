@@ -12,7 +12,7 @@
 
 NAME=ft_select
 
-SRC=build.c
+SRC=build.c tools.c
 
 LIB=./libft/libft.a
 
