@@ -12,24 +12,87 @@
 
 # include "ft_select.h"
 
-static void			first_print(char **argv)
+static int			count_space(char *tmp)
 {
-	char		**tmp;
-	t_size		size;
-	int			len;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (tmp[i])
+	{
+		if (tmp[i] == ' ')
+			j++;
+		i++;
+	}
+	return (j);
+}
+/*ESPACE = 32*/
+void				print(int len, char **tmp, char **argv, int cursor)
+{
 	int			i;
 	int			j;
-	
+	char		*str;
+	char		*str2;
+
 	i = 1;
-	size = window_size();
-	len = wordbyline(&size, argv);
-	tmp = morespaces(argv);
+	while (argv[i])
+	{
+		j = 0;
+		while (j <= len && tmp[i])
+		{
+			if (i == cursor)
+			{
+				str = ft_strsub(tmp[i], 0, ft_strlen(tmp[i]) -
+					count_space(tmp[i]));
+				str2 = ft_strchr(tmp[i], ' ');
+				ft_putstr(UNDERLINE);
+				ft_putstr(str);
+				ft_putstr(NORMAL);
+				ft_putstr(str2);
+				ft_putchar(' ');
+			}
+			else
+			{
+				ft_putstr(tmp[i]);
+				ft_putchar(' ');
+			}
+			i++;
+			j++;
+		}
+		ft_putchar('\n');
+	}
+}
+
+static void				print_rvideo(int len, char **tmp, int cursor)
+{
+	int			i;
+	int			j;
+	char		*str;
+	char		*str2;
+
+	i = 1;
 	while (tmp[i])
 	{
 		j = 0;
 		while (j <= len && tmp[i])
 		{
-			ft_putstr(tmp[i]);
+			if (i == cursor)
+			{
+				str = ft_strsub(tmp[i], 0, ft_strlen(tmp[i]) -
+					count_space(tmp[i]));
+				str2 = ft_strchr(tmp[i], ' ');
+				ft_putstr(RVIDEO);
+				ft_putstr(str);
+				ft_putstr(NORMAL);
+				ft_putstr(str2);
+				ft_putchar(' ');
+			}
+			else
+			{
+				ft_putstr(tmp[i]);
+				ft_putchar(' ');
+			}
 			i++;
 			j++;
 		}
@@ -41,46 +104,41 @@ int					show_arrow(t_act act, int argc, char **argv)
 {
 	char			**tmp;
 	char			buf[3];
-	int				i;
-	int				j;
+	int				cursor;;
 	int				len;
 	int				flag;
 	t_size			size;
 
-	i = 1;
 	flag = 0;
-	tputs(act.clstr, 0, ft_outc);
-	tputs(act.invis, 0, ft_outc);
-	first_print(argv);
-	tmp = morespaces(argv);
-	while (1)
+	cursor = 1;
+//	tmp = morespaces(argv);
+	while (!(buf[0] == 27 && buf[2] == 0))
 	{
-		if (flag != 0)
+/*		tmp = morespaces(argv);
+		size = window_size();
+		len = wordbyline(&size, argv);
+		if (size.lin_tmp && size.col_tmp && ((size.lin_tmp != size.lin) || (size.col_tmp != size.col)))
 		{
 			size = window_size();
 			len = wordbyline(&size, argv);
 		}
-		if (flag == 1 && ((size.lin_tmp != size.lin) ||
-			(size.col_tmp != size.col)))
-		{
-			i = 1;
-			tputs(act.clstr, 0, ft_outc);
-			while (tmp[i])
-			{
-				j = 0;
-				while (j <= len && tmp[i])
-				{
-					ft_putstr(tmp[i]);
-					i++;
-					j++;
-				}
-				ft_putchar('\n');
-			}
-		}
-		flag = 1;
+*/		tputs(act.clstr, 0, ft_outc);
+		tmp = morespaces(argv);
+		size = window_size();
+		len = wordbyline(&size, argv);
+		print(len, tmp, argv, cursor);
+		flag = 0;
 		size.lin_tmp = size.lin;
 		size.col_tmp = size.col;
 		read(0, buf, 3);
+		if (buf[0] == 32)	/*mettre un else if pour les autres keys*/
+		{
+			tputs(act.clstr, 0, ft_outc);
+			//cursor++;
+			if (cursor >= tablen(argv))
+				cursor = 1;
+			print_rvideo(len, tmp, cursor);
+		}
 		if (buf[0] == 27 && buf[1] != '\0')
 		{
 			if (buf[2] == 65)
@@ -90,42 +148,31 @@ int					show_arrow(t_act act, int argc, char **argv)
 			if (buf[2] == 67)
 			{
 				printf("Arrow RIGHT\n");
-//				tputs(act.home, 0, ft_outc);
+				tputs(act.clstr, 0, ft_outc);
+				cursor++;
+				if (cursor >= tablen(argv))
+					cursor = 1;
+				print(len, tmp, argv, cursor);
 			}
 			if (buf[2] == 68)
 			{
 				printf("Arrow LEFT\n");
-//				tputs(tgoto(act.cmstr, 0, 0), 1, ft_outc);
+				tputs(act.clstr, 0, ft_outc);
+				cursor--;
+				if (cursor <= 0)
+				{
+					cursor = tablen(argv) - 1;
+					printf("cursor : %d\nargc : %d\n", cursor, argc);
+				}
+				print(len, tmp, argv, cursor);
 			}
 		}
-		else if (buf[0] == 27 && buf[1] == '\0')
+		if (buf[0] == 27 && buf[1] == '\0')
 		{
 			printf("escape, exit.\n");
-			tputs(act.normal, 0, ft_outc);
 			return (0);
 		}
-	/*	if (flag == 1 && ((size.lin_tmp != size.lin) ||
-			(size.col_tmp != size.col)))
-		{
-			i = 1;
-			tputs(act.clstr, 0, ft_outc);
-			while (argv[i])
-			{
-				j = 0;
-				while (j <= len && argv[i])
-				{
-					ft_putstr(argv[i]);
-					ft_putchar(' ');
-					i++;
-					j++;
-				}
-				ft_putchar('\n');
-			}
-		}
-		flag = 1;
-		size.lin_tmp = size.lin;
-		size.col_tmp = size.col;
-	*/	ft_bzero(buf, 3);
+		ft_bzero(buf, 3);
 	}
 	return (0);
 }
@@ -134,6 +181,7 @@ int				main(int argc, char **argv)
 {
 	char			*name_term;
 	struct termios	term;
+	t_act			act;
 
 	if (argc < 2)
 	{
@@ -155,7 +203,14 @@ int				main(int argc, char **argv)
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
 		return (-1);
-	show_arrow(stock_actions(), argc, argv);
-	default_shell();
+	act = stock_actions();
+	tputs(act.init, 0, ft_outc);
+	tputs(act.clstr, 0, ft_outc);
+	tputs(act.invis, 0, ft_outc);
+	show_arrow(act, argc, argv);
+	tputs(act.normal, 0, ft_outc);
+	tputs(act.end, 0, ft_outc);
+	if (default_shell() == -1)
+		return (-1);
 	return(0);
 }

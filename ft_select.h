@@ -22,6 +22,8 @@ typedef struct		s_act
 	char	*invis;
 	char	*normal;
 	char	*home;
+	char	*init;
+	char	*end;
 }					t_act;
 
 typedef struct		s_size
@@ -30,6 +32,7 @@ typedef struct		s_size
 	unsigned short	col;
 	unsigned short	lin_tmp;
 	unsigned short	col_tmp;
+	int				spaces;
 }					t_size;
 
 char				**morespaces(char **argv);
@@ -40,5 +43,6 @@ t_size				window_size(void);
 int					lenmax_str(char **argv);
 int					show_arrow(t_act act, int argc, char **argv);
 int					wordbyline(t_size *size, char **argv);
+int					tablen(char **argv);
 
 #endif

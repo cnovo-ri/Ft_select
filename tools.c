@@ -27,6 +27,8 @@ t_act				stock_actions(void)
 	act.invis = tgetstr("vi", NULL);
 	act.normal = tgetstr("ve", NULL);
 	act.home = tgetstr("ho", NULL);
+	act.init = tgetstr("ti", NULL);
+	act.end = tgetstr("te", NULL);
 	return (act);
 }
 
@@ -38,9 +40,9 @@ t_size					window_size(void)
 	ioctl(STDOUT_FILENO,TIOCGWINSZ, &w);
 	size.lin = w.ws_row;
 	size.col = w.ws_col;
-/*	printf("lines %d\n", size.lin);
-	printf("columns %d\n", size.col);
-*/	return(size);
+	printf(BLUE"lines %d\n", size.lin);
+	printf("columns %d\n"NORMAL, size.col);
+	return(size);
 }
 
 int					lenmax_str(char **argv)
@@ -76,21 +78,21 @@ char				**morespaces(char **argv)
 	char	**tmp;
 	char	*str;
 	int		tab_len;
-	int		spaces;
+	t_size	size;
 	int		i;
 	int		j;
 
-	i = 0;
+	i = 1;
 	tab_len = tablen(argv);
 	if (!(tmp = (char **)malloc(sizeof(char *) * (tab_len + 1))))
 		return (NULL);
 	while (argv[i])
 	{
 		j = 0;
-		spaces = lenmax_str(argv) - ft_strlen(argv[i]);
-		if (!(str = (char *)malloc(sizeof(char) * spaces)))
+		size.spaces = lenmax_str(argv) - ft_strlen(argv[i]);
+		if (!(str = (char *)malloc(sizeof(char) * size.spaces)))
 			return (NULL);
-		while (j < (spaces + 1))
+		while (j < (size.spaces))
 		{
 			str[j] = ' ';
 			j++;
