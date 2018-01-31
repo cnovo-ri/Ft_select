@@ -27,44 +27,8 @@ static int			count_space(char *tmp)
 	}
 	return (j);
 }
-/*ESPACE = 32*/
-void				print(int len, char **tmp, char **argv, int cursor)
-{
-	int			i;
-	int			j;
-	char		*str;
-	char		*str2;
 
-	i = 1;
-	while (argv[i])
-	{
-		j = 0;
-		while (j <= len && tmp[i])
-		{
-			if (i == cursor)
-			{
-				str = ft_strsub(tmp[i], 0, ft_strlen(tmp[i]) -
-					count_space(tmp[i]));
-				str2 = ft_strchr(tmp[i], ' ');
-				ft_putstr(UNDERLINE);
-				ft_putstr(str);
-				ft_putstr(NORMAL);
-				ft_putstr(str2);
-				ft_putchar(' ');
-			}
-			else
-			{
-				ft_putstr(tmp[i]);
-				ft_putchar(' ');
-			}
-			i++;
-			j++;
-		}
-		ft_putchar('\n');
-	}
-}
-
-static void				print_rvideo(int len, char **tmp, int cursor)
+static int				print(int len, char **tmp, int cursor, int *status)
 {
 	int			i;
 	int			j;
@@ -82,62 +46,101 @@ static void				print_rvideo(int len, char **tmp, int cursor)
 				str = ft_strsub(tmp[i], 0, ft_strlen(tmp[i]) -
 					count_space(tmp[i]));
 				str2 = ft_strchr(tmp[i], ' ');
-				ft_putstr(RVIDEO);
-				ft_putstr(str);
-				ft_putstr(NORMAL);
-				ft_putstr(str2);
-				ft_putchar(' ');
+				if (status[i] == 1)
+					ft_putstr_fd(RVIDEO, 0);
+				ft_putstr_fd(UNDERLINE, 0);
+				ft_putstr_fd(str, 0);
+				ft_putstr_fd(NORMAL, 0);
+				ft_putstr_fd(str2, 0);
+				ft_putchar_fd(' ', 0);
 			}
 			else
 			{
-				ft_putstr(tmp[i]);
-				ft_putchar(' ');
+				if (status[i] == 1)
+				{
+					str = ft_strsub(tmp[i], 0, ft_strlen(tmp[i]) -
+						count_space(tmp[i]));
+					str2 = ft_strchr(tmp[i], ' ');
+					ft_putstr_fd(RVIDEO, 0);
+					ft_putstr_fd(str, 0);
+					ft_putstr_fd(NORMAL, 0);
+					ft_putstr_fd(str2, 0);
+				}
+				else
+					ft_putstr_fd(tmp[i], 0);
+				ft_putchar_fd(' ', 0);
 			}
 			i++;
 			j++;
 		}
-		ft_putchar('\n');
+		ft_putchar_fd('\n', 0);
 	}
+	return (cursor);
+}
+
+static int			*stck_stat(char **tmp, int argc, int cursor, int *status)
+{
+	int			i;
+
+	i = 0;
+	while (i < argc)
+	{
+		if (status[i] != 1)
+			status[i] = 0;
+		if (i == cursor && i != 0)
+		{
+			if (status[i] == 1)
+				status[i] = 0;
+			else
+				status[i] = 1;
+		}
+		i++;
+	}
+	status[i] = 0;
+	i = 0;
+	while (i < argc)
+	{
+		printf("status[%d] : %d\n", i, status[i]);
+		i++;
+	}
+	return (status);
 }
 
 int					show_arrow(t_act act, int argc, char **argv)
 {
 	char			**tmp;
 	char			buf[3];
-	int				cursor;;
+	int				cursor;
 	int				len;
-	int				flag;
+	int				sizemax;
+	int				*status;
 	t_size			size;
 
-	flag = 0;
 	cursor = 1;
-//	tmp = morespaces(argv);
+	if (!(status = (int *)malloc(sizeof(int) * (argc + 1))))
+		return (-1);
 	while (!(buf[0] == 27 && buf[2] == 0))
 	{
-/*		tmp = morespaces(argv);
-		size = window_size();
-		len = wordbyline(&size, argv);
-		if (size.lin_tmp && size.col_tmp && ((size.lin_tmp != size.lin) || (size.col_tmp != size.col)))
-		{
-			size = window_size();
-			len = wordbyline(&size, argv);
-		}
-*/		tputs(act.clstr, 0, ft_outc);
+		tputs(act.clstr, 0, ft_outc);
 		tmp = morespaces(argv);
 		size = window_size();
 		len = wordbyline(&size, argv);
-		print(len, tmp, argv, cursor);
-		flag = 0;
+		sizemax = lenmax_str(argv) + 1;
+		if (sizemax > size.col)
+			ft_putstr_fd("Windows size is too small bro\n", 0);
+		else
+			cursor = print(len, tmp, cursor, status);
+		printf(RED"cursor %d : %s\n"NORMAL, cursor, tmp[cursor]);
 		size.lin_tmp = size.lin;
 		size.col_tmp = size.col;
 		read(0, buf, 3);
-		if (buf[0] == 32)	/*mettre un else if pour les autres keys*/
+		if (buf[0] == 32)
 		{
-			tputs(act.clstr, 0, ft_outc);
-			//cursor++;
+			status = stck_stat(tmp, argc, cursor, status);
+			cursor++;
 			if (cursor >= tablen(argv))
-				cursor = 1;
-			print_rvideo(len, tmp, cursor);
+					cursor = 1;
+			printf("argc : %d\n", argc);
 		}
 		if (buf[0] == 27 && buf[1] != '\0')
 		{
@@ -152,7 +155,7 @@ int					show_arrow(t_act act, int argc, char **argv)
 				cursor++;
 				if (cursor >= tablen(argv))
 					cursor = 1;
-				print(len, tmp, argv, cursor);
+				cursor = print(len, tmp, cursor, status);
 			}
 			if (buf[2] == 68)
 			{
@@ -160,11 +163,8 @@ int					show_arrow(t_act act, int argc, char **argv)
 				tputs(act.clstr, 0, ft_outc);
 				cursor--;
 				if (cursor <= 0)
-				{
 					cursor = tablen(argv) - 1;
-					printf("cursor : %d\nargc : %d\n", cursor, argc);
-				}
-				print(len, tmp, argv, cursor);
+				cursor = print(len, tmp, cursor, status);
 			}
 		}
 		if (buf[0] == 27 && buf[1] == '\0')
@@ -180,6 +180,7 @@ int					show_arrow(t_act act, int argc, char **argv)
 int				main(int argc, char **argv)
 {
 	char			*name_term;
+	char			buffer[2048];
 	struct termios	term;
 	t_act			act;
 
@@ -193,7 +194,7 @@ int				main(int argc, char **argv)
 		ft_putstr_fd("Hey, bring back env bro\n", 2);
 		return (-1);
 	}
-	if (tgetent(NULL, name_term) == -1)
+	if (tgetent(buffer, name_term) == -1)
 		return (-1);
 	if (tcgetattr(0, &term) == -1)
 		return (-1);
