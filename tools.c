@@ -45,17 +45,17 @@ t_size					window_size(void)
 	return(size);
 }
 
-int					lenmax_str(char **argv)
+int					lenmax_str(t_act *act)
 {
 	int			len;
 	int			i;
 
 	len = 0;
 	i = 1;
-	while (argv[i])
+	while (g_act.s_argv[i])
 	{
-		if (ft_strlen(argv[i]) > len)
-			len = ft_strlen(argv[i]);
+		if (ft_strlen(g_act.s_argv[i]) > len)
+			len = ft_strlen(g_act.s_argv[i]);
 		i++;
 	}
 	return (len);

@@ -24,6 +24,8 @@ typedef struct		s_act
 	char	*home;
 	char	*init;
 	char	*end;
+	int		*status;
+	char	**s_argv;
 }					t_act;
 
 typedef struct		s_size
@@ -35,14 +37,15 @@ typedef struct		s_size
 	int				spaces;
 }					t_size;
 
-char				**morespaces(char **argv);
+t_act				g_act;
+char				**morespaces(t_act *act);
 int					ft_outc(int c);
 int					default_shell(void);
 t_act				stock_actions(void);
 t_size				window_size(void);
-int					lenmax_str(char **argv);
-int					show_arrow(t_act act, int argc, char **argv);
-int					wordbyline(t_size *size, char **argv);
-int					tablen(char **argv);
+int					lenmax_str(t_act *act);
+int					show_arrow(t_act *act, int argc);
+int					wordbyline(t_size *size, t_act *act);
+int					tablen(t_act *act);
 
 #endif
