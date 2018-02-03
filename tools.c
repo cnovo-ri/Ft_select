@@ -22,11 +22,9 @@ t_act				stock_actions(void)
 {
 	t_act	act;
 
-	act.cmstr = tgetstr("cm", NULL);
 	act.clstr = tgetstr("cl", NULL);
 	act.invis = tgetstr("vi", NULL);
 	act.normal = tgetstr("ve", NULL);
-	act.home = tgetstr("ho", NULL);
 	act.init = tgetstr("ti", NULL);
 	act.end = tgetstr("te", NULL);
 	return (act);
@@ -40,8 +38,6 @@ t_size					window_size(void)
 	ioctl(STDOUT_FILENO,TIOCGWINSZ, &w);
 	size.lin = w.ws_row;
 	size.col = w.ws_col;
-	printf("lines %d\n", size.lin);
-	printf("columns %d\n", size.col);
 	return(size);
 }
 

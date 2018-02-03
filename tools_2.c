@@ -12,37 +12,56 @@ int					tablen(t_act *act)
 	return (i);
 }
 
-char				**morespaces(t_act *act)
+int					count_space(char *tmp)
 {
-	char	**tmp;
-	char	*str;
-	int		tab_len;
-	t_size	size;
 	int		i;
 	int		j;
 
-	i = 1;
-	tab_len = tablen(act);
-	if (!(tmp = (char **)malloc(sizeof(char *) * (tab_len + 1))))
-		return (NULL);
-	while (g_act.s_argv[i])
+	i = 0;
+	j = 0;
+	while (tmp[i])
 	{
-		j = 0;
-		size.spaces = lenmax_str(act) - ft_strlen(g_act.s_argv[i]);
-		if (!(str = (char *)malloc(sizeof(char) * size.spaces)))
-			return (NULL);
-		while (j < (size.spaces))
-		{
-			str[j] = ' ';
+		if (tmp[i] == ' ')
 			j++;
-		}
-		str[j] = '\0';
-		tmp[i] = ft_strjoin(g_act.s_argv[i], str);
-		free(str);
 		i++;
 	}
-	tmp[i] = NULL;
-	return (tmp);
+	return (j);
+}
+
+static t_var			init_var(t_act *act)
+{
+	t_var	var;
+
+	var.i = 1;
+	var.tab_len = tablen(act);
+	if (!(var.tmp = (char **)malloc(sizeof(char *) * (var.tab_len + 1))))
+		return (var);
+	return (var);
+}
+
+char				**morespaces(t_act *act)
+{
+	t_var	var;
+
+	var = init_var(act);
+	while (g_act.s_argv[var.i])
+	{
+		var.j = 0;
+		var.size.spaces = lenmax_str(act) - ft_strlen(g_act.s_argv[var.i]);
+		if (!(var.str = (char *)malloc(sizeof(char) * var.size.spaces)))
+			return (NULL);
+		while (var.j < (var.size.spaces))
+		{
+			var.str[var.j] = ' ';
+			var.j++;
+		}
+		var.str[var.j] = '\0';
+		var.tmp[var.i] = ft_strjoin(g_act.s_argv[var.i], var.str);
+		free(var.str);
+		var.i++;
+	}
+	var.tmp[var.i] = NULL;
+	return (var.tmp);
 }
 
 int				wordbyline(t_size *size, t_act *act)

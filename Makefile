@@ -12,7 +12,7 @@
 
 NAME=ft_select
 
-SRC=build.c tools.c tools_2.c
+SRC=build.c build_2.c tools.c tools_2.c print.c
 
 LIB=./libft/libft.a
 
@@ -28,7 +28,6 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft/
-#	@$(CC) $(FLAGS) -c $(SRC) -I . -I ./libft -L. -ltermcap
 	@$(CC) $(FLAGS) -o $(NAME) $(OBJ) $(HEADER) $(LIB) -L. -ltermcap
 	@echo "\033[1m\033[32m[ ✔ ]Compiled :\033[0m $(NAME) ࿇"
 
