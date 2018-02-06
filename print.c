@@ -35,7 +35,7 @@ static void					printer_two(char **tmp, int i, t_act *act)
 	ft_putchar_fd(' ', 0);
 }
 
-int						print(int len, char **tmp, int cursor, t_act *act)
+int						print(int len, char **tmp, t_act *act)
 {
 	int			i;
 	int			j;
@@ -48,7 +48,7 @@ int						print(int len, char **tmp, int cursor, t_act *act)
 		j = 0;
 		while (j <= len && tmp[i])
 		{
-			if (i == cursor)
+			if (i == act->cursor)
 				printer_one(tmp, i, act);
 			else
 				printer_two(tmp, i, act);
@@ -57,5 +57,5 @@ int						print(int len, char **tmp, int cursor, t_act *act)
 		}
 		ft_putchar_fd('\n', 0);
 	}
-	return (cursor);
+	return (act->cursor);
 }

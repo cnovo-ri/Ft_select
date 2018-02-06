@@ -24,14 +24,18 @@ typedef struct		s_act
 	char			*end;
 	int				*status;
 	char			**s_argv;
+	char			buf[3];
+	int				cursor;
+	struct termios	saved_term;
+	char			**tmp;
+	int				len;
+	int				s_argc;
 }					t_act;
 
 typedef struct		s_size
 {
 	unsigned short	lin;
 	unsigned short	col;
-	unsigned short	lin_tmp;
-	unsigned short	col_tmp;
 	int				spaces;
 }					t_size;
 
@@ -46,11 +50,19 @@ typedef struct		s_var
 }					t_var;
 
 t_act				g_act;
+t_size				g_size;
 
+void				sig_size(int sig);
+void				sig_cont(int sig);
+void				sig_tstp(int sig);
+void				sig_int(int sig);
+int					init(int argc);
+void				manage_size(t_act *act, char **tmp, int len, t_size *size);
+void				sigtest();
 int					show_arrow(t_act *act, int argc);
-char				**delete_arg(int cursor, t_act *act);
-int					*stck_stat(char **tmp, int argc, int cursor, t_act *act);
-int					print(int len, char **tmp, int cursor, t_act *act);
+char				**delete_arg(t_act *act);
+int					*stck_stat(char **tmp, int argc, t_act *act);
+int					print(int len, char **tmp, t_act *act);
 int					count_space(char *tmp);
 char				**morespaces(t_act *act);
 int					ft_outc(int c);
