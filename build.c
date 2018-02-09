@@ -37,7 +37,7 @@ int				*stck_stat(char **tmp, int argc, t_act *act)
 int					init(struct termios *saved_term)
 {
 	char			*name_term;
-	char			buffer[2048];
+//	char			buffer[2048];
 	struct termios	term;
 
 	if ((name_term = getenv("TERM")) == NULL)
@@ -45,7 +45,7 @@ int					init(struct termios *saved_term)
 		ft_putstr_fd("Hey, bring back env bro\n", 2);
 		return (-1);
 	}
-	if (tgetent(buffer, name_term) == -1)
+	if (tgetent(NULL, name_term) == -1)
 		return (-1);
 	if (tcgetattr(0, &term) == -1)
 		return (-1);
@@ -53,7 +53,7 @@ int					init(struct termios *saved_term)
 	term.c_lflag &= ~(ICANON);
 	term.c_lflag &= ~(ECHO);
 	term.c_cc[VMIN] = 1;
-	term.c_cc[VTIME] = 1;
+	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
 		return (-1);
 	return (0);
