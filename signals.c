@@ -31,7 +31,7 @@ void		sig_cont(int sig)
 {
 	(void)sig;
 	signal(SIGTSTP, &sig_tstp);
-	init(g_act.s_argc);
+	init(&g_act.saved_term);
 	tputs(tgetstr("ti", NULL), 0, ft_outc);
 	tputs(tgetstr("cl", NULL), 0, ft_outc);
 	tputs(tgetstr("vi", NULL), 0, ft_outc);

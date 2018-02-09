@@ -35,7 +35,7 @@ t_size					window_size(void)
 	struct winsize	w;
 	t_size			size;
 
-	ioctl(STDOUT_FILENO,TIOCGWINSZ, &w);
+	ioctl(0, TIOCGWINSZ, &w);
 	size.lin = w.ws_row;
 	size.col = w.ws_col;
 	return(size);

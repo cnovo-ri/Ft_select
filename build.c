@@ -34,7 +34,7 @@ int				*stck_stat(char **tmp, int argc, t_act *act)
 	return (act->status);
 }
 
-int					init(int argc)
+int					init(struct termios *saved_term)
 {
 	char			*name_term;
 	char			buffer[2048];
@@ -49,7 +49,7 @@ int					init(int argc)
 		return (-1);
 	if (tcgetattr(0, &term) == -1)
 		return (-1);
-	g_act.saved_term = term;
+	*saved_term = term;
 	term.c_lflag &= ~(ICANON);
 	term.c_lflag &= ~(ECHO);
 	term.c_cc[VMIN] = 1;
@@ -70,9 +70,9 @@ static int				actions(int argc, t_act *act)
 		i = 1;
 	tputs(act->normal, 0, ft_outc);
 	tputs(act->end, 0, ft_outc);
-	if (default_shell() == -1)
+	/*if (default_shell() == -1)
 		return (-1);
-	return (i);
+*/	return (i);
 }
 
 static void		print_choices(t_act *act, int i)
@@ -104,12 +104,15 @@ int				main(int argc, char **argv)
 		ft_putstr_fd("We need more arguments bro\n", 2);
 		return (-1);
 	}
-	sigtest(&act);
-	init(argc);
+	sigtest();
+	if (init(&g_act.saved_term) == -1)
+		return (-1);
 	act = stock_actions();
 	i = actions(argc, &act);
 	if (i == - 1)
 		return (-1);
 	print_choices(&act, i);
+	if (tcsetattr(0, 0, &g_act.saved_term) == -1)
+		return (-1);
 	return(0);
 }
