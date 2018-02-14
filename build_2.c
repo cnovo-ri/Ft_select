@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   build_2.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/14 17:16:01 by cnovo-ri          #+#    #+#             */
+/*   Updated: 2018/02/14 17:16:05 by cnovo-ri         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_select.h"
 
 char				**delete_arg(t_act *act)
@@ -94,11 +106,13 @@ int					show_arrow(t_act *act, int argc)
 		g_act.cursor = act->cursor;
 		g_act.status = act->status;
 		read(0, act->buf, 3);
-		if (spc_and_dlt(act, act->tmp, argc, act->len) == -1)
+/*		if (act->buf[0] == 27 && act->buf[1] == '\0')
+			return (0);
+*/		if (spc_and_dlt(act, act->tmp, argc, act->len) == -1)
 			return (0);
 		if (act->buf[0] == 10)
 			return (1);
-		if (act->buf[0] == 27 && act->buf[1] == '\0')
+		if (act->buf[0] == 27 && act->buf[2] == 0)
 			return (0);
 		ft_bzero(act->buf, 3);
 	}
