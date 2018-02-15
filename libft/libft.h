@@ -30,7 +30,7 @@
 # include <math.h>
 # include <termios.h>
 # include <term.h>
-//# include <curses.h>
+# include <curses.h>
 # include <signal.h>
 # include <termcap.h>
 # include <sys/ioctl.h>

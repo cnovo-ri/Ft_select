@@ -37,7 +37,6 @@ int				*stck_stat(char **tmp, int argc, t_act *act)
 int					init(struct termios *saved_term)
 {
 	char			*name_term;
-//	char			buffer[2048];
 	struct termios	term;
 
 	if ((name_term = getenv("TERM")) == NULL)
@@ -53,7 +52,7 @@ int					init(struct termios *saved_term)
 	term.c_lflag &= ~(ICANON);
 	term.c_lflag &= ~(ECHO);
 	term.c_cc[VMIN] = 1;
-	term.c_cc[VTIME] = 0;
+	term.c_cc[VTIME] = 1;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
 		return (-1);
 	return (0);
@@ -70,9 +69,7 @@ static int				actions(int argc, t_act *act)
 		i = 1;
 	tputs(act->normal, 0, ft_outc);
 	tputs(act->end, 0, ft_outc);
-	/*if (default_shell() == -1)
-		return (-1);
-*/	return (i);
+	return (i);
 }
 
 static void		print_choices(t_act *act, int i)

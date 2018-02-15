@@ -14,19 +14,7 @@
 
 int					ft_outc(int c)
 {
-	ft_putchar(c);
-	return (0);
-}
-
-int					default_shell(void)
-{
-	struct termios	term;
-
-	if (tcgetattr(0, &term) == -1)
-		return (-1);
-	term.c_lflag = (ICANON | ECHO);
-	if (tcsetattr(0, 0, &term) == -1)
-		return (-1);
+	write(0, &c, 1);
 	return (0);
 }
 

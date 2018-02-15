@@ -78,7 +78,7 @@ static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
 	return (0);
 }
 
-void				manage_size(t_act *act, char **tmp, int len, t_size *size)
+int				manage_size(t_act *act, char **tmp, int len, t_size *size)
 {
 	int		sizemax;
 
@@ -87,6 +87,7 @@ void				manage_size(t_act *act, char **tmp, int len, t_size *size)
 			ft_putstr_fd("Windows size is too small bro\n", 0);
 		else
 			act->cursor = print(len, tmp, act);
+	return (0);
 }
 
 int					show_arrow(t_act *act, int argc)
@@ -98,6 +99,12 @@ int					show_arrow(t_act *act, int argc)
 		return (-1);
 	while (!(act->buf[0] == 27 && act->buf[2] == 0))
 	{
+		if (spc_and_dlt(act, act->tmp, argc, act->len) == -1)
+			return (0);
+		if (act->buf[0] == 10)
+			return (1);
+		if (act->buf[0] == 27 && act->buf[2] == 0)
+			return (0);
 		tputs(act->clstr, 0, ft_outc);
 		act->tmp = morespaces(act);
 		size = window_size();
@@ -105,16 +112,8 @@ int					show_arrow(t_act *act, int argc)
 		manage_size(act, act->tmp, act->len, &size);
 		g_act.cursor = act->cursor;
 		g_act.status = act->status;
-		read(0, act->buf, 3);
-/*		if (act->buf[0] == 27 && act->buf[1] == '\0')
-			return (0);
-*/		if (spc_and_dlt(act, act->tmp, argc, act->len) == -1)
-			return (0);
-		if (act->buf[0] == 10)
-			return (1);
-		if (act->buf[0] == 27 && act->buf[2] == 0)
-			return (0);
 		ft_bzero(act->buf, 3);
+		read(0, act->buf, 3);
 	}
 	return (0);
 }
