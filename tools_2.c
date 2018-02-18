@@ -6,11 +6,11 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:36 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/14 17:17:06 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/02/18 16:06:25 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"ft_select.h"
+#include "ft_select.h"
 
 int					tablen(t_act *act)
 {
@@ -40,7 +40,7 @@ int					count_space(char *tmp)
 	return (j);
 }
 
-static t_var			init_var(t_act *act)
+static t_var		init_var(t_act *act)
 {
 	t_var	var;
 
@@ -76,7 +76,7 @@ char				**morespaces(t_act *act)
 	return (var.tmp);
 }
 
-int				wordbyline(t_size *size, t_act *act)
+int					wordbyline(t_size *size, t_act *act)
 {
 	int		sizemax;
 	int		wordbyline;

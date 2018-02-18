@@ -6,19 +6,19 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:23 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/14 17:16:53 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/02/18 15:31:25 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_select.h"
 
-/**********************SIGNALS*******************************/
-/* SIGINT = ctrl + c (interruption);                        */
-/* SIGWINCH = manage window size;                           */
-/* SIGSTP = ctrl +z (pause, stop);                          */
-/* SIGCONT = continue process (fg);                         */
-/* SIGQUIT = ctrl + \ ('*' on azerty)(terminal quit);       */
-/************************************************************/
+/*
+**SIGINT = ctrl + c (interruption);
+**SIGWINCH = manage window size;
+**SIGSTP = ctrl +z (pause, stop);
+**SIGCONT = continue process (fg);
+**SIGQUIT = ctrl + \ ('*' on azerty)(terminal force quit);
+*/
 
 void		sig_int(int sig)
 {
@@ -63,7 +63,7 @@ void		sig_size(int sig)
 	manage_size(&g_act, g_act.tmp, g_act.len, &g_size);
 }
 
-void			sigtest(void)
+void		sigtest(void)
 {
 	signal(SIGINT, sig_int);
 	signal(SIGTSTP, sig_tstp);

@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:16 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/14 17:16:48 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/02/18 15:19:45 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void					printer_two(char **tmp, int i, t_act *act)
 	ft_putchar_fd(' ', 0);
 }
 
-int						print(int len, char **tmp, t_act *act)
+int							print(int len, char **tmp, t_act *act)
 {
 	int			i;
 	int			j;

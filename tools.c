@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:32 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/14 17:16:55 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/02/18 16:05:20 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_act				stock_actions(void)
 	return (act);
 }
 
-t_size					window_size(void)
+t_size				window_size(void)
 {
 	struct winsize	w;
 	t_size			size;
@@ -38,7 +38,7 @@ t_size					window_size(void)
 	ioctl(0, TIOCGWINSZ, &w);
 	size.lin = w.ws_row;
 	size.col = w.ws_col;
-	return(size);
+	return (size);
 }
 
 int					lenmax_str(t_act *act)

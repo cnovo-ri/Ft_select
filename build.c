@@ -6,13 +6,13 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 23:42:31 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/14 15:30:41 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/02/18 15:17:46 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_select.h"
+#include "ft_select.h"
 
-int				*stck_stat(char **tmp, int argc, t_act *act)
+int						*stck_stat(char **tmp, int argc, t_act *act)
 {
 	int			i;
 
@@ -34,7 +34,7 @@ int				*stck_stat(char **tmp, int argc, t_act *act)
 	return (act->status);
 }
 
-int					init(struct termios *saved_term)
+int						init(struct termios *saved_term)
 {
 	char			*name_term;
 	struct termios	term;
@@ -72,7 +72,7 @@ static int				actions(int argc, t_act *act)
 	return (i);
 }
 
-static void		print_choices(t_act *act, int i)
+static void				print_choices(t_act *act, int i)
 {
 	if (i == 1)
 	{
@@ -89,7 +89,7 @@ static void		print_choices(t_act *act, int i)
 	}
 }
 
-int				main(int argc, char **argv)
+int						main(int argc, char **argv)
 {
 	t_act			act;
 	int				i;
@@ -106,10 +106,10 @@ int				main(int argc, char **argv)
 		return (-1);
 	act = stock_actions();
 	i = actions(argc, &act);
-	if (i == - 1)
+	if (i == -1)
 		return (-1);
 	print_choices(&act, i);
 	if (tcsetattr(0, 0, &g_act.saved_term) == -1)
 		return (-1);
-	return(0);
+	return (0);
 }
