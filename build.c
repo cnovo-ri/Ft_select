@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 23:42:31 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/18 15:17:46 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/02/18 18:22:40 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,10 @@ int						main(int argc, char **argv)
 		ft_putstr_fd("We need more arguments bro\n", 2);
 		return (-1);
 	}
-	sigtest();
+//	sigtest();
 	if (init(&g_act.saved_term) == -1)
 		return (-1);
+	sigtest();
 	act = stock_actions();
 	i = actions(argc, &act);
 	if (i == -1)
