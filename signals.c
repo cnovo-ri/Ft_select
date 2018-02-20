@@ -69,5 +69,6 @@ void		sigtest(void)
 	signal(SIGTSTP, sig_tstp);
 	signal(SIGCONT, sig_cont);
 	signal(SIGQUIT, sig_int);
+	signal(SIGTERM, sig_int);
 	signal(SIGWINCH, sig_size);
 }

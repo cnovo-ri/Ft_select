@@ -26,6 +26,7 @@ static void					printer_one(char **tmp, int i, t_act *act)
 	ft_putstr_fd(NORMAL, 0);
 	ft_putstr_fd(str2, 0);
 	ft_putchar_fd(' ', 0);
+	free(str);
 }
 
 static void					printer_two(char **tmp, int i, t_act *act)
@@ -41,6 +42,7 @@ static void					printer_two(char **tmp, int i, t_act *act)
 		ft_putstr_fd(str, 0);
 		ft_putstr_fd(NORMAL, 0);
 		ft_putstr_fd(str2, 0);
+		free(str);
 	}
 	else
 		ft_putstr_fd(tmp[i], 0);
@@ -51,8 +53,6 @@ int							print(int len, char **tmp, t_act *act)
 {
 	int			i;
 	int			j;
-	char		*str;
-	char		*str2;
 
 	i = 1;
 	while (tmp[i])
