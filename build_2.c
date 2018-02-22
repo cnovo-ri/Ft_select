@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:01 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/18 15:19:06 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/02/22 22:15:21 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,15 @@ static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
 int					manage_size(t_act *act, char **tmp, int len, t_size *size)
 {
 	int		sizemax;
+	int		n;
+	int		count;
 
+	count = 0;
+	while (g_act.s_argv[count])
+		count++;
 	sizemax = lenmax_str(act) + 1;
-	if (sizemax > size->col)
+	n = (size->col * size->lin) / ((sizemax + 1) * (count - 1));
+	if (!n || sizemax > size->col)
 		ft_putstr_fd("Windows size is too small bro\n", 0);
 	else
 		act->cursor = print(len, tmp, act);
