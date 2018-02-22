@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:23 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/18 18:01:35 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/02/23 00:44:12 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void		sig_cont(int sig)
 	tputs(tgetstr("ti", NULL), 0, ft_outc);
 	tputs(tgetstr("cl", NULL), 0, ft_outc);
 	tputs(tgetstr("vi", NULL), 0, ft_outc);
-	g_act.tmp = morespaces(&g_act);
+	//g_act.tmp = morespaces(&g_act);
+	g_act.tmp = g_act.s_argv;
 	g_size = window_size();
 	g_act.len = wordbyline(&g_size, &g_act);
 	manage_size(&g_act, g_act.tmp, g_act.len, &g_size);
