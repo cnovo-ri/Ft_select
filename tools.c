@@ -38,6 +38,8 @@ t_size				window_size(void)
 	ioctl(0, TIOCGWINSZ, &w);
 	size.lin = w.ws_row;
 	size.col = w.ws_col;
+	g_size.col = size.col;
+	g_size.lin = size.lin;
 	return (size);
 }
 
@@ -55,4 +57,15 @@ int					lenmax_str(t_act *act)
 		i++;
 	}
 	return (len);
+}
+
+int					check_big(int n, t_act *act)
+{
+	int		sizemax;
+	int		count;
+
+	count = tablen(act);
+	sizemax = lenmax_str(act) + 1;
+	n = (g_size.col * g_size.lin) / ((sizemax + 1) * (count - 1));
+	return (n);
 }

@@ -52,6 +52,7 @@ typedef struct		s_var
 t_act				g_act;
 t_size				g_size;
 
+int					check_big(int n, t_act *act);
 void				sig_size(int sig);
 void				sig_cont(int sig);
 void				sig_tstp(int sig);

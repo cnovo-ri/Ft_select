@@ -39,21 +39,28 @@ char				**delete_arg(t_act *act)
 
 static void			arrows(t_act *act, int len, char **tmp)
 {
+	int		n;
+
+	n = check_big(n, act);
 	if (act->buf[0] == 27 && act->buf[2] == 67)
 	{
 		tputs(act->clstr, 0, ft_outc);
 		act->cursor++;
-		if (act->cursor >= tablen(act))
-			act->cursor = 1;
-		act->cursor = print(len, tmp, act);
+		act->cursor = (act->cursor >= tablen(act)) ? 1 : act->cursor;
+		if (!n)
+			ft_putstr_fd("Woooow your test is too big for me !\n", 0);
+		else
+			act->cursor = print(len, tmp, act);
 	}
 	if (act->buf[0] == 27 && act->buf[2] == 68)
 	{
 		tputs(act->clstr, 0, ft_outc);
 		act->cursor--;
-		if (act->cursor <= 0)
-			act->cursor = tablen(act) - 1;
-		act->cursor = print(len, tmp, act);
+		act->cursor = (act->cursor <= 0) ? tablen(act) - 1 : act->cursor;
+		if (!n)
+			ft_putstr_fd("Woooow your test is too big for me !\n", 0);
+		else
+			act->cursor = print(len, tmp, act);
 	}
 }
 
@@ -89,11 +96,8 @@ int					manage_size(t_act *act, char **tmp, int len, t_size *size)
 	n = (size->col * size->lin) / ((sizemax + 1) * (count - 1));
 	if (!n)
 	{
-		tputs(tgetstr("te", NULL), 0, ft_outc);
-		tputs(tgetstr("ve", NULL), 0, ft_outc);
 		ft_putstr_fd("Woooow your test is too big for me !\n", 2);
-		tcsetattr(0, 0, &g_act.saved_term);
-		exit(1);
+		return (0);
 	}
 	if (sizemax > size->col)
 	{
@@ -120,8 +124,8 @@ int					show_arrow(t_act *act, int argc)
 		if (act->buf[0] == 27 && act->buf[2] == 0)
 			return (0);
 		tputs(act->clstr, 0, ft_outc);
-//		act->tmp = morespaces(act);
-		act->tmp = g_act.s_argv;
+		act->tmp = morespaces(act);
+//		act->tmp = g_act.s_argv;
 		size = window_size();
 		act->len = wordbyline(&size, act);
 		manage_size(act, act->tmp, act->len, &size);
