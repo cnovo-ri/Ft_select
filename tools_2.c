@@ -40,40 +40,21 @@ int					count_space(char *tmp)
 	return (j);
 }
 
-static t_var		init_var(t_act *act)
-{
-	t_var	var;
-
-	var.i = 1;
-	var.tab_len = tablen(act);
-	if (!(var.tmp = (char **)malloc(sizeof(char *) * (var.tab_len + 1))))
-		return (var);
-	return (var);
-}
-
 char				**morespaces(t_act *act)
 {
-	t_var	var;
+	int		i;
 
-	var = init_var(act);
-	while (g_act.s_argv[var.i])
+	i = 0;
+	if (!(act->tmp = (char **)malloc(sizeof(char *) * tablen(act) + 1)))
+		return (NULL);
+	while (g_act.s_argv[i])
 	{
-		var.j = 0;
-		var.size.spaces = lenmax_str(act) - ft_strlen(g_act.s_argv[var.i]);
-		if (!(var.str = (char *)malloc(sizeof(char) * var.size.spaces)))
-			return (NULL);
-		while (var.j < (var.size.spaces))
-		{
-			var.str[var.j] = ' ';
-			var.j++;
-		}
-		var.str[var.j] = '\0';
-		var.tmp[var.i] = ft_strjoin(g_act.s_argv[var.i], var.str);
-		free(var.str);
-		var.i++;
+		if (i != 0)
+			act->tmp[i] = g_act.s_argv[i];
+		i++;
 	}
-	var.tmp[var.i] = NULL;
-	return (var.tmp);
+	act->tmp[i] = NULL;
+	return (act->tmp);
 }
 
 int					wordbyline(t_size *size, t_act *act)

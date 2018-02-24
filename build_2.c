@@ -96,7 +96,7 @@ int					manage_size(t_act *act, char **tmp, int len, t_size *size)
 	n = (size->col * size->lin) / ((sizemax + 1) * (count - 1));
 	if (!n)
 	{
-		ft_putstr_fd("Woooow your test is too big for me !\n", 2);
+		ft_putstr_fd("Woooow your test is too big for me !\n", 0);
 		return (0);
 	}
 	if (sizemax > size->col)
@@ -125,7 +125,6 @@ int					show_arrow(t_act *act, int argc)
 			return (0);
 		tputs(act->clstr, 0, ft_outc);
 		act->tmp = morespaces(act);
-//		act->tmp = g_act.s_argv;
 		size = window_size();
 		act->len = wordbyline(&size, act);
 		manage_size(act, act->tmp, act->len, &size);

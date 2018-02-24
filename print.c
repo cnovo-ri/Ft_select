@@ -12,40 +12,43 @@
 
 #include "ft_select.h"
 
-static void					printer_one(char **tmp, int i, t_act *act)
+static void					printer_one(char **tmp, int i, t_act *act, int space)
 {
-	char		*str;
-	char		*str2;
-
-	str = ft_strsub(tmp[i], 0, ft_strlen(tmp[i]) - count_space(tmp[i]));
-	str2 = ft_strchr(tmp[i], ' ');
 	if (act->status[i] == 1)
 		ft_putstr_fd(RVIDEO, 0);
 	ft_putstr_fd(UNDERLINE, 0);
-	ft_putstr_fd(str, 0);
+	ft_putstr_fd(tmp[i], 0);
 	ft_putstr_fd(NORMAL, 0);
-	ft_putstr_fd(str2, 0);
+	while (space > 0)
+	{
+		ft_putchar_fd(' ', 0);
+		space--;
+	}
 	ft_putchar_fd(' ', 0);
-	free(str);
 }
 
-static void					printer_two(char **tmp, int i, t_act *act)
+static void					printer_two(char **tmp, int i, t_act *act, int space)
 {
-	char		*str;
-	char		*str2;
-
 	if (act->status[i] == 1)
 	{
-		str = ft_strsub(tmp[i], 0, ft_strlen(tmp[i]) - count_space(tmp[i]));
-		str2 = ft_strchr(tmp[i], ' ');
 		ft_putstr_fd(RVIDEO, 0);
-		ft_putstr_fd(str, 0);
+		ft_putstr_fd(tmp[i], 0);
 		ft_putstr_fd(NORMAL, 0);
-		ft_putstr_fd(str2, 0);
-		free(str);
+		while (space > 0)
+		{
+			ft_putchar_fd(' ', 0);
+			space--;
+		}
 	}
 	else
+	{
 		ft_putstr_fd(tmp[i], 0);
+		while (space > 0)
+		{
+			ft_putchar_fd(' ', 0);
+			space--;
+		}
+	}
 	ft_putchar_fd(' ', 0);
 }
 
@@ -53,6 +56,7 @@ int							print(int len, char **tmp, t_act *act)
 {
 	int			i;
 	int			j;
+	int			space;
 
 	i = 1;
 	while (tmp[i])
@@ -60,10 +64,11 @@ int							print(int len, char **tmp, t_act *act)
 		j = 0;
 		while (j <= len && tmp[i])
 		{
+			space = lenmax_str(act) - ft_strlen(tmp[i]);
 			if (i == act->cursor)
-				printer_one(tmp, i, act);
+				printer_one(tmp, i, act, space);
 			else
-				printer_two(tmp, i, act);
+				printer_two(tmp, i, act, space);
 			i++;
 			j++;
 		}

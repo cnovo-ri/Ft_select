@@ -38,7 +38,7 @@ int						init(struct termios *saved_term)
 {
 	char			*name_term;
 	struct termios	term;
-
+	
 	if ((name_term = getenv("TERM")) == NULL)
 	{
 		ft_putstr_fd("Hey, bring back env bro\n", 2);
@@ -74,9 +74,10 @@ static int				actions(int argc, t_act *act)
 
 static void				print_choices(t_act *act, int i)
 {
+
 	if (i == 1)
 	{
-		i = 0;
+	//	i = 0;
 		while (g_act.s_argv[i])
 		{
 			if (act->status[i] == 1)
@@ -109,6 +110,8 @@ int						main(int argc, char **argv)
 	if (i == -1)
 		return (-1);
 	print_choices(&act, i);
+	free(act.status);
+	free(act.tmp);
 	if (tcsetattr(0, 0, &g_act.saved_term) == -1)
 		return (-1);
 	return (0);
