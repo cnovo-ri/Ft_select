@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:23 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/23 00:44:12 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/06 17:26:19 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,15 @@ void		sig_size(int sig)
 
 void		sigtest(void)
 {
-	signal(SIGINT, sig_int);
+	int		i;
+
+	i = 1;
+	while (i < 16)
+	{
+		signal(i, sig_int);
+		i++;
+	}
 	signal(SIGTSTP, sig_tstp);
 	signal(SIGCONT, sig_cont);
-	signal(SIGQUIT, sig_int);
-	signal(SIGTERM, sig_int);
 	signal(SIGWINCH, sig_size);
 }
