@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:01 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/03/06 17:03:22 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/06 17:29:28 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
 	}
 	if ((act->buf[0] == 27 && act->buf[2] == 51) || act->buf[0] == 127)
 	{
-		getchar();
+//		getchar();
 		g_act.s_argv = delete_arg(act);
 		if (act->cursor >= tablen(act))
 			act->cursor = 1;
