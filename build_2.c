@@ -20,7 +20,7 @@ char				**delete_arg(t_act *act)
 
 	i = 0;
 	j = 0;
-	if (!(tmp = (char **)malloc(sizeof(char *) * (tablen(act) - 1))))
+	if (!(tmp = (char **)malloc(sizeof(char *) * (tablen(act)))))
 		return (NULL);
 	while (g_act.s_argv[i])
 	{
@@ -34,6 +34,8 @@ char				**delete_arg(t_act *act)
 		i++;
 	}
 	tmp[j] = NULL;
+	g_act.copy_argv = tmp;
+	free(tmp);
 	return (tmp);
 }
 
@@ -66,6 +68,8 @@ static void			arrows(t_act *act, int len, char **tmp)
 
 static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
 {
+	char	 **tmp_2;
+
 	if (act->buf[0] == 32)
 	{
 		act->status = stck_stat(tmp, argc, act);
@@ -75,8 +79,8 @@ static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
 	}
 	if ((act->buf[0] == 27 && act->buf[2] == 51) || act->buf[0] == 127)
 	{
-//		getchar();
-		g_act.s_argv = delete_arg(act);
+		tmp = delete_arg(act);
+		g_act.s_argv = tmp;
 		if (act->cursor >= tablen(act))
 			act->cursor = 1;
 		if (!(g_act.s_argv[1]))
@@ -111,7 +115,7 @@ int					manage_size(t_act *act, char **tmp, int len, t_size *size)
 
 int					show_arrow(t_act *act, int argc)
 {
-	t_size			size;
+	t_size		size;
 
 	act->cursor = 1;
 	if (!(act->status = (int *)malloc(sizeof(int) * (argc + 1))))
@@ -125,7 +129,7 @@ int					show_arrow(t_act *act, int argc)
 		if (act->buf[0] == 27 && act->buf[2] == 0)
 			return (0);
 		tputs(act->clstr, 0, ft_outc);
-		act->tmp = morespaces(act);
+		act->tmp = g_act.s_argv;
 		size = window_size();
 		act->len = wordbyline(&size, act);
 		manage_size(act, act->tmp, act->len, &size);

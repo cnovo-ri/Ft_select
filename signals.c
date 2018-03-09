@@ -48,7 +48,7 @@ void		sig_cont(int sig)
 	tputs(tgetstr("ti", NULL), 0, ft_outc);
 	tputs(tgetstr("cl", NULL), 0, ft_outc);
 	tputs(tgetstr("vi", NULL), 0, ft_outc);
-	g_act.tmp = morespaces(&g_act);
+	g_act.tmp = g_act.s_argv;
 	g_size = window_size();
 	g_act.len = wordbyline(&g_size, &g_act);
 	manage_size(&g_act, g_act.tmp, g_act.len, &g_size);
@@ -58,7 +58,7 @@ void		sig_size(int sig)
 {
 	(void)sig;
 	tputs(tgetstr("cl", NULL), 0, ft_outc);
-	g_act.tmp = morespaces(&g_act);
+	g_act.tmp = g_act.s_argv;
 	g_size = window_size();
 	g_act.len = wordbyline(&g_size, &g_act);
 	manage_size(&g_act, g_act.tmp, g_act.len, &g_size);

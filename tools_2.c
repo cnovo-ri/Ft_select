@@ -12,6 +12,19 @@
 
 #include "ft_select.h"
 
+void				free_tab(char **tmp)
+{
+	int i;
+
+	i = 0;
+	while (tmp[i])
+	{
+		free(tmp[i]);
+		i++;
+	}
+	free(tmp);
+}
+
 int					tablen(t_act *act)
 {
 	int		i;
@@ -47,7 +60,7 @@ char				**morespaces(t_act *act)
 	i = 0;
 	if (!(act->tmp = (char **)malloc(sizeof(char *) * tablen(act) + 1)))
 		return (NULL);
-	while (g_act.s_argv[i])
+	while (i < tablen(act))
 	{
 		if (i != 0)
 			act->tmp[i] = g_act.s_argv[i];

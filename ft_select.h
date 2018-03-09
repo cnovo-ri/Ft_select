@@ -30,6 +30,7 @@ typedef struct		s_act
 	char			**tmp;
 	int				len;
 	int				s_argc;
+	char			**copy_argv;
 }					t_act;
 
 typedef struct		s_size
@@ -52,6 +53,7 @@ typedef struct		s_var
 t_act				g_act;
 t_size				g_size;
 
+void				free_tab(char **tmp);
 int					check_big(int n, t_act *act);
 void				sig_size(int sig);
 void				sig_cont(int sig);
