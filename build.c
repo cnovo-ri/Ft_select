@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 23:42:31 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/18 18:31:55 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/20 22:59:07 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int						init(struct termios *saved_term)
 {
 	char			*name_term;
 	struct termios	term;
-	
+
 	if ((name_term = getenv("TERM")) == NULL)
 	{
 		ft_putstr_fd("Hey, bring back env bro\n", 2);

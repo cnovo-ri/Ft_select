@@ -6,13 +6,13 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:16 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/18 15:19:45 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/20 23:02:26 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_select.h"
 
-static void					printer_one(char **tmp, int i, t_act *act, int space)
+static void				printer_one(char **tmp, int i, t_act *act, int space)
 {
 	if (act->status[i] == 1)
 		ft_putstr_fd(RVIDEO, 0);
@@ -27,7 +27,7 @@ static void					printer_one(char **tmp, int i, t_act *act, int space)
 	ft_putchar_fd(' ', 0);
 }
 
-static void					printer_two(char **tmp, int i, t_act *act, int space)
+static void				printer_two(char **tmp, int i, t_act *act, int space)
 {
 	if (act->status[i] == 1)
 	{
@@ -52,7 +52,7 @@ static void					printer_two(char **tmp, int i, t_act *act, int space)
 	ft_putchar_fd(' ', 0);
 }
 
-int							print(int len, char **tmp, t_act *act)
+int						print(int len, char **tmp, t_act *act)
 {
 	int			i;
 	int			j;

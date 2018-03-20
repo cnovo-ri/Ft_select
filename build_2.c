@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:01 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/03/06 17:29:28 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/20 22:59:38 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void			arrows(t_act *act, int len, char **tmp)
 
 static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
 {
-	char	 **tmp_2;
+	char	**tmp_2;
 
 	if (act->buf[0] == 32)
 	{
