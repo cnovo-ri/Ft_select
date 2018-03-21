@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/14 17:16:32 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/22 23:44:21 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/21 06:55:56 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int					lenmax_str(t_act *act)
 	i = 1;
 	while (g_act.s_argv[i])
 	{
-		if (ft_strlen(g_act.s_argv[i]) > len)
+		if (ft_strlen(g_act.s_argv[i]) > len && act->status[i] != 5)
 			len = ft_strlen(g_act.s_argv[i]);
 		i++;
 	}

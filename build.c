@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 23:42:31 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/03/20 22:59:07 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/21 07:16:11 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,17 @@ int						*stck_stat(char **tmp, int argc, t_act *act)
 	i = 0;
 	while (i < argc)
 	{
-		if (act->status[i] != 1)
-			act->status[i] = 0;
-		if (i == act->cursor && i != 0)
+		if (act->status[i] != 5)
 		{
-			if (act->status[i] == 1)
+			if (act->status[i] != 1)
 				act->status[i] = 0;
-			else
-				act->status[i] = 1;
+			if (i == act->cursor && i != 0)
+			{
+				if (act->status[i] == 1)
+					act->status[i] = 0;
+				else
+					act->status[i] = 1;
+			}
 		}
 		i++;
 	}

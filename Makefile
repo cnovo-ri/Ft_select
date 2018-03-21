@@ -6,7 +6,7 @@
 #    By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/15 13:14:57 by cnovo-ri          #+#    #+#              #
-#    Updated: 2018/02/22 23:59:03 by cnovo-ri         ###   ########.fr        #
+#    Updated: 2018/03/21 00:16:58 by cnovo-ri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ HEADER=-I./
 
 OBJ=$(SRC:.c=.o)
 
-FLAGS=-Wall -Wextra -Werror
+FLAGS=-g -Wall -Wextra -Werror
 
 CC=cc
 

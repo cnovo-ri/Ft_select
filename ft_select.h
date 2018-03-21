@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 23:41:23 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/02/22 23:41:20 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/21 00:50:47 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int					init(struct termios *saved_term);
 int					manage_size(t_act *act, char **tmp, int len, t_size *size);
 void				sigtest(void);
 int					show_arrow(t_act *act, int argc);
-char				**delete_arg(t_act *act);
+void				delete_arg(t_act *act);
 int					*stck_stat(char **tmp, int argc, t_act *act);
 int					print(int len, char **tmp, t_act *act);
 int					count_space(char *tmp);
