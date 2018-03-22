@@ -12,6 +12,29 @@
 
 #include "ft_select.h"
 
+int					manage_size(t_act *act, char **tmp, int len, t_size *size)
+{
+	int		sizemax;
+	int		n;
+	int		count;
+
+	count = tablen(act);
+	sizemax = lenmax_str(act) + 1;
+	n = (size->col * size->lin) / ((sizemax + 1) * (count - 1));
+	if (!n)
+	{
+		ft_putstr_fd("Woooow your test is too big for me !\n", 0);
+		return (0);
+	}
+	if (sizemax > size->col)
+	{
+		ft_putstr_fd("Windows size is too small bro\n", 0);
+	}
+	else
+		act->cursor = print(len, tmp, act);
+	return (0);
+}
+
 void				free_tab(char **tmp)
 {
 	int i;
@@ -51,23 +74,6 @@ int					count_space(char *tmp)
 		i++;
 	}
 	return (j);
-}
-
-char				**morespaces(t_act *act)
-{
-	int		i;
-
-	i = 0;
-	if (!(act->tmp = (char **)malloc(sizeof(char *) * tablen(act) + 1)))
-		return (NULL);
-	while (i < tablen(act))
-	{
-		if (i != 0)
-			act->tmp[i] = g_act.s_argv[i];
-		i++;
-	}
-	act->tmp[i] = NULL;
-	return (act->tmp);
 }
 
 int					wordbyline(t_size *size, t_act *act)

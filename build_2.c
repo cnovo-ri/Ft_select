@@ -11,51 +11,24 @@
 /* ************************************************************************** */
 
 #include "ft_select.h"
-/*
-static void			swapato(char **tmp, char **tmp_2)
+
+static void			arrows_2(t_act *act, int len, char **tmp, int n)
 {
-	char **swapi;
-
-	swapi = tmp;
-	tmp = tmp_2;
-	tmp_2 = swapi;
-}
-*/
-
-void				delete_arg(t_act *act)
-{
-//	char	**tmp;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-/*	if (!(tmp = (char **)malloc(sizeof(char *) * (tablen(act)))))
-		return ;
-*/	while (g_act.s_argv[i])
+	if (act->buf[0] == 27 && act->buf[2] == 68)
 	{
-/*		if (i != act->cursor)
+		tputs(act->clstr, 0, ft_outc);
+		act->cursor--;
+		act->cursor = (act->cursor <= 0) ? tablen(act) - 1 : act->cursor;
+		while (act->status[act->cursor] == 5)
 		{
-			tmp[j] = ft_strdup(g_act.s_argv[i]);
-			j++;
+			act->cursor--;
+			act->cursor = (act->cursor <= 0) ? tablen(act) - 1 : act->cursor;
 		}
-*/	/*	if (i >= act->cursor && act->status[i] != 5)
-			act->status[i] = act->status[i + 1];
-	*/	i++;
+		if (!n)
+			ft_putstr_fd("Woooow your test is too big for me !\n", 0);
+		else
+			act->cursor = print(len, tmp, act);
 	}
-//	tmp[j] = NULL;
-/*	i = 0;
-	swapato(tmp, g_act.s_argv);*/
-//	g_act.s_argv = tmp;
-/*	i = 0;
-	while (tmp[i])
-	{
-		free(tmp[i]);
-		i++;
-	}*/
-//	free(tmp);
-//	free_tab(tmp);
-//	return (tmp);
 }
 
 static void			arrows(t_act *act, int len, char **tmp)
@@ -78,57 +51,16 @@ static void			arrows(t_act *act, int len, char **tmp)
 		else
 			act->cursor = print(len, tmp, act);
 	}
-	if (act->buf[0] == 27 && act->buf[2] == 68)
-	{
-		tputs(act->clstr, 0, ft_outc);
-		act->cursor--;
-		act->cursor = (act->cursor <= 0) ? tablen(act) - 1 : act->cursor;
-		while (act->status[act->cursor] == 5)
-		{
-			act->cursor--;
-			act->cursor = (act->cursor <= 0) ? tablen(act) - 1 : act->cursor;
-		}
-		if (!n)
-			ft_putstr_fd("Woooow your test is too big for me !\n", 0);
-		else
-			act->cursor = print(len, tmp, act);
-	}
+	arrows_2(act, len, tmp, n);
 }
 
-static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
+static int			delete(t_act *act, int i, int cnt)
 {
-	char	**tmp_2;
-	int		count;
-	int		i;
-
-	count = 0;
-	if (act->buf[0] == 32)
-	{
-		act->status = stck_stat(tmp, argc, act);
-		act->cursor++;
-		while (act->status[act->cursor] == 5)
-		{
-			act->cursor++;
-			act->cursor = act->cursor >= tablen(act) ? 1 : act->cursor;
-		}
-		if (act->cursor >= tablen(act))
-			act->cursor = 1;
-	}
 	if ((act->buf[0] == 27 && act->buf[2] == 51) || act->buf[0] == 127)
 	{
-/*		tmp = delete_arg(act);
-		g_act.s_argv = tmp;
-*/	//	delete_arg(act);
 		act->status[act->cursor] = 5;
 		while (act->status[act->cursor] == 5)
-		{
 			act->cursor++;
-/*			act->cursor = act->cursor >= tablen(act) ? 1 : act->cursor;
-			if (act->status[act->cursor] == 0 || act->status[act->cursor] == 1)
-				count++;
-			if (count > 1)
-				break;
-*/		}
 		if (act->cursor >= tablen(act) && act->status[1] != 5)
 			act->cursor = 1;
 		else
@@ -138,42 +70,42 @@ static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
 			while (act->status[act->cursor] == 5)
 				act->cursor++;
 		}
-//		g_act.s_argv = g_act.copy_argv;
-///////////			PAS SUR POUR CA A VERIFIER////////////
-/*		i = 1;
-		while (act->status[i])
+		i = 0;
+		while (g_act.s_argv[i])
 		{
-			if (act->status[i] == 0 || act->status[i] == 1)
-				count++;
+			cnt = (act->status[i] == 0 || act->status[i] == 1) ? cnt + 1 : cnt;
 			i++;
 		}
-*/		if (!(g_act.s_argv[1]))
+		if (!(g_act.s_argv[1]) || cnt == 1)
 			return (-1);
 	}
-	arrows(act, len, tmp);
 	return (0);
 }
 
-int					manage_size(t_act *act, char **tmp, int len, t_size *size)
+static int			spc_and_dlt(t_act *act, char **tmp, int argc, int len)
 {
-	int		sizemax;
-	int		n;
 	int		count;
+	int		i;
 
-	count = tablen(act);
-	sizemax = lenmax_str(act) + 1;
-	n = (size->col * size->lin) / ((sizemax + 1) * (count - 1));
-	if (!n)
+	count = 0;
+	if (act->buf[0] == 32)
 	{
-		ft_putstr_fd("Woooow your test is too big for me !\n", 0);
-		return (0);
+		act->status = stck_stat(tmp, argc, act);
+		act->cursor++;
+		while (act->status[act->cursor] == 5)
+			act->cursor++;
+		if (act->cursor >= tablen(act) && act->status[1] != 5)
+			act->cursor = 1;
+		else
+		{
+			act->cursor = (act->cursor >= tablen(act)) ? 1 : act->cursor;
+			while (act->status[act->cursor] == 5)
+				act->cursor++;
+		}
 	}
-	if (sizemax > size->col)
-	{
-		ft_putstr_fd("Windows size is too small bro\n", 0);
-	}
-	else
-		act->cursor = print(len, tmp, act);
+	if (delete(act, i, count) == -1)
+		return (-1);
+	arrows(act, len, tmp);
 	return (0);
 }
 

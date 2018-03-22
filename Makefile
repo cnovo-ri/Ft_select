@@ -20,7 +20,7 @@ HEADER=-I./
 
 OBJ=$(SRC:.c=.o)
 
-FLAGS=-g -Wall -Wextra -Werror
+FLAGS=-Wall -Wextra -Werror
 
 CC=cc
 

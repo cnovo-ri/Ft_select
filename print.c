@@ -47,7 +47,6 @@ static void				printer_two(char **tmp, int i, t_act *act, int space)
 		}
 		else
 		{
-			if (act->status[i] != 5)
 			ft_putstr_fd(tmp[i], 0);
 			while (space > 0)
 			{
@@ -71,22 +70,18 @@ int						print(int len, char **tmp, t_act *act)
 		j = 0;
 		while (j <= len && tmp[i])
 		{
-			space = lenmax_str(act) - ft_strlen(tmp[i]);
-			if (i == act->cursor)
-				printer_one(tmp, i, act, space);
-			else
-				printer_two(tmp, i, act, space);
+			if (act->status[i] != 5)
+			{
+				space = lenmax_str(act) - ft_strlen(tmp[i]);
+				if (i == act->cursor)
+					printer_one(tmp, i, act, space);
+				else
+					printer_two(tmp, i, act, space);
+				j++;
+			}
 			i++;
-			j++;
 		}
-		if (act->status[i] != 5)
-			ft_putchar_fd('\n', 0);
-	}
-	i = 0;
-	while (tmp[i])
-	{
-		printf("act->status[%d] : %d\n", i, act->status[i]);
-		i++;
+		ft_putchar_fd('\n', 0);
 	}
 	return (act->cursor);
 }
