@@ -6,13 +6,13 @@
 #    By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/15 13:14:57 by cnovo-ri          #+#    #+#              #
-#    Updated: 2018/03/21 00:16:58 by cnovo-ri         ###   ########.fr        #
+#    Updated: 2018/03/23 10:24:33 by cnovo-ri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=ft_select
 
-SRC=build.c build_2.c tools.c tools_2.c print.c signals.c
+SRC=build.c build_2.c tools.c tools_2.c print.c signals.c intro.c intro2.c
 
 LIB=./libft/libft.a
 

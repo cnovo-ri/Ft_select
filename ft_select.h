@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 23:41:23 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/03/21 00:50:47 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/23 10:19:58 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct		s_var
 t_act				g_act;
 t_size				g_size;
 
+void				intro2(void);
+void				intro(void);
 void				free_tab(char **tmp);
 int					check_big(int n, t_act *act);
 void				sig_size(int sig);

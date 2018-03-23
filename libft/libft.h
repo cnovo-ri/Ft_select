@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/21 10:20:36 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/01/17 05:08:21 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/03/23 10:03:07 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # include <sys/ioctl.h>
 # include <stdarg.h>
 
-# define RVIDEO		"\033[7m"
+# define RVIDEO		"\033[7;31m"
 # define UNDERLINE	"\033[4m"
 # define BLACK		"\033[1;30m"
 # define RED		"\033[1;31m"
