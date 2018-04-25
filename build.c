@@ -6,7 +6,7 @@
 /*   By: cnovo-ri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 23:42:31 by cnovo-ri          #+#    #+#             */
-/*   Updated: 2018/03/23 10:21:35 by cnovo-ri         ###   ########.fr       */
+/*   Updated: 2018/04/25 09:38:48 by cnovo-ri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int				actions(int argc, t_act *act)
 	tputs(act->init, 0, ft_outc);
 	tputs(act->clstr, 0, ft_outc);
 	tputs(act->invis, 0, ft_outc);
-	intro();
+//	intro();
 	if (show_arrow(act, argc) == 1)
 		i = 1;
 	intro2();
